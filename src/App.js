@@ -1,7 +1,9 @@
+import { PageRoutes } from './pages/PageRoutes';
+
 export const App = () => {
   return (
     <>
-      <h1>Hello!</h1>
+      <PageRoutes/>
     </>
   );
-}
+};
