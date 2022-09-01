@@ -8,7 +8,7 @@ export const PageRoutes = () => {
 		<>
 			<Router>
 				<Routes>
-					<Route exact path='/s' element={<Senators/>} />
+					<Route exact path='/senate' element={<Senators/>} />
 				</Routes>
 			</Router>
 		</>
