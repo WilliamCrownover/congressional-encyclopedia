@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { getSenators } from "../utils/utils"
+import { SenatorCard } from "../components/SenatorCard";
+import { getSenators, createFullName, createWikipediaURL } from "../utils/utils"
 
 export const Senators = () => {
 	const [fullCongress, setFullCongress] = useState([]);
+	// console.log(fullCongress);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -15,7 +17,21 @@ export const Senators = () => {
 	return (
 		<>
 			<h1>Senator Data</h1>
-			<h2>{fullCongress?.length}</h2>
+			<h2>All Current and Past U.S. Senators</h2>
+			{fullCongress.map( (senator) => (
+					<SenatorCard
+						fullName={createFullName(
+							senator.name.first || '',
+							senator.name.nickname || '',
+							senator.name.middle || '',
+							senator.name.last || '',
+							senator.name.suffix || ''
+						)}
+						birthday={senator.bio.birthday}
+						gender={senator.bio.gender}
+						wikipedia={createWikipediaURL(senator.id.wikipedia)}
+					/>
+			))}
 		</>
 	)
 }
