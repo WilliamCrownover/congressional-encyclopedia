@@ -29,6 +29,7 @@ export const Senators = () => {
 						)}
 						birthday={senator.bio.birthday}
 						gender={senator.bio.gender}
+						terms={senator.terms}
 						wikipedia={createWikipediaURL(senator.id.wikipedia)}
 					/>
 			))}
