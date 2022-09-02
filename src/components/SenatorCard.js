@@ -1,13 +1,17 @@
+import { calcDaysBetween } from '../utils/timeUtils'
 
-export const SenatorCard = ({fullName, birthday, gender, terms, wikipedia}) => {
+export const SenatorRow = ({fullName, birthday, gender, terms, wikipedia}) => {
 	return (
-		<div className="senatorCard">
-			<h3>{fullName}</h3>
-			<h4>{birthday}</h4>
-			<h4>{gender}</h4>
-			<h4>{terms[terms.length - 1].state}</h4>
-			<h4>{terms[terms.length - 1].party}</h4>
-			<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
-		</div>
+		<tr>
+			<td>{fullName}</td>
+			<td>{birthday}</td>
+			<td>{gender}</td>
+			<td>{terms[terms.length - 1].state}</td>
+			<td>{terms[terms.length - 1].party}</td>
+			<td>{`${calcDaysBetween(terms[0].start, terms[terms.length - 1].end)} Days`}</td>
+			<td>
+				<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
+			</td>
+		</tr>
 	)
 }
