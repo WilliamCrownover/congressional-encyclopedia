@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { SenatorRow } from "../components/SenatorCard";
+import { SenatorRow } from "../components/SenatorRow";
 import { getSenators, createFullName, createWikipediaURL } from "../utils/utils"
 
 export const Senators = () => {
 	const [fullCongress, setFullCongress] = useState([]);
-	// console.log(fullCongress);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -20,6 +19,7 @@ export const Senators = () => {
 			<h2>All Current and Past U.S. Senators</h2>
 			<table>
 				<tr>
+					<th>Image</th>
 					<th>Name</th>
 					<th>Birthday</th>
 					<th>Gender</th>
@@ -30,6 +30,7 @@ export const Senators = () => {
 				</tr>
 				{fullCongress.map( (senator) => (
 						<SenatorRow
+							bioguide={senator.id.bioguide}
 							fullName={createFullName(
 								senator.name.first || '',
 								senator.name.nickname || '',
@@ -46,5 +47,5 @@ export const Senators = () => {
 			</table>
 		</>
 	)
-}
+};
 	
