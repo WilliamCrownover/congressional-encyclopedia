@@ -9,7 +9,7 @@ const getCongress = async (when) => {
 	}
 }
 
-export const getFullCongress = async () => {
+const getFullCongress = async () => {
 	let historical = await getCongress('historical');
 	let current = await getCongress('current');
 
@@ -18,7 +18,7 @@ export const getFullCongress = async () => {
 	return fullCongress;
 }
 
-const filterByTerm = async (congress, chamber) => {
+const filterByTerm = (congress, chamber) => {
 	let senators = [];
 	let representatives = [];
 	let senAndRep = [];
@@ -54,8 +54,28 @@ const filterByTerm = async (congress, chamber) => {
 	}
 }
 
+const removeRepTerms = (senData) => {
+	let cleanedSenData = [];
+
+	for( let i = 0; i < senData.length; i++ ) {
+		let terms = senData[i].terms;
+		let cleanedTerms = [];
+
+		for( let j = 0; j < terms.length; j++ ) {
+			if( terms[j].type === 'sen') {
+				cleanedTerms.push(terms[j])
+			}
+		}
+
+		senData[i].terms = cleanedTerms;
+		cleanedSenData.push(senData[i]);
+	}
+
+	return cleanedSenData
+}
+
 export const getSenators = async () => {
-	return await filterByTerm(await getFullCongress(), 'senate');
+	return removeRepTerms( filterByTerm( await getFullCongress(), 'senate'));
 }
 
 export const createFullName = (f,n,m,l,s) => {
