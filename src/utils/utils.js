@@ -85,3 +85,27 @@ export const createFullName = (f,n,m,l,s) => {
 export const createWikipediaURL = (wiki) => {
 	return `https://en.wikipedia.org/wiki/${wiki.replace(/\s/g, '_')}`
 }
+
+export const sortSenateSeats = async () => {
+	const rawSenators = await getSenators();
+	let sortedSenators = {};
+
+	for( let i = 0; i < rawSenators.length; i++ ) {
+		let senator = rawSenators[i];
+		let trackSeatIDs = {};
+		for( let j = 0; j < senator.terms.length; j++ ) {
+			let term = senator.terms[j];
+			let seatID = term.state + term.class
+			if( !sortedSenators[seatID]) {
+				sortedSenators[seatID] = [];
+			}
+			if( !trackSeatIDs[seatID]) {
+				trackSeatIDs[seatID] = true;
+				sortedSenators[seatID].push(senator);
+			}
+		}
+	}
+
+	console.log('sortedSenators', sortedSenators);
+	return sortedSenators;
+}
