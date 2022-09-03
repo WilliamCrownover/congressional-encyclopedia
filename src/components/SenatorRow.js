@@ -31,7 +31,9 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 			<td>{gender}</td>
 			<td>{terms[terms.length - 1].state}</td>
 			<td>{terms[terms.length - 1].party}</td>
+			<td>{dateFormat(terms[0].start)}</td>
 			<td>{birthday && (calcDaysBetween(birthday, terms[0].start) / 365).toFixed()}</td>
+			<td>{dateFormat(terms[terms.length - 1].end)}</td>
 			<td>{birthday && (calcDaysBetween(birthday, terms[terms.length - 1].end) / 365).toFixed()}</td>
 			<td>{terms.length}</td>
 			<td>{`${daysInOffice(terms)} Days`}</td>

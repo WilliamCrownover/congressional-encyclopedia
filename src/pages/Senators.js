@@ -25,7 +25,9 @@ export const Senators = () => {
 					<th>Gender</th>
 					<th>State</th>
 					<th>Party</th>
+					<th>Term Start Date</th>
 					<th>Age, Term Start</th>
+					<th>Term End Date</th>
 					<th>Age, Term End</th>
 					<th>Num of Terms</th>
 					<th>Days in Office</th>
