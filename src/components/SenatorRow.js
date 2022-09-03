@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { calcDaysBetween } from '../utils/timeUtils';
+import { calcDaysBetween, dateFormat } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
 
 export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikipedia}) => {
@@ -27,7 +27,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 				/>
 			</td>
 			<td>{fullName}</td>
-			<td>{birthday}</td>
+			<td>{birthday && dateFormat(birthday)}</td>
 			<td>{gender}</td>
 			<td>{terms[terms.length - 1].state}</td>
 			<td>{terms[terms.length - 1].party}</td>
