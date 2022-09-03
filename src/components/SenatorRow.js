@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { calcDaysBetween, dateFormat } from '../utils/timeUtils';
+import { dateFormat, daysInOffice, calcDaysBetween } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
 
 export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikipedia}) => {
@@ -34,7 +34,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 			<td>{birthday && (calcDaysBetween(birthday, terms[0].start) / 365).toFixed()}</td>
 			<td>{birthday && (calcDaysBetween(birthday, terms[terms.length - 1].end) / 365).toFixed()}</td>
 			<td>{terms.length}</td>
-			<td>{`${calcDaysBetween(terms[0].start, terms[terms.length - 1].end)} Days`}</td>
+			<td>{`${daysInOffice(terms)} Days`}</td>
 			<td>
 				<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
 			</td>

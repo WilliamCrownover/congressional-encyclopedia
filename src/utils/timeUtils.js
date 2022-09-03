@@ -7,9 +7,20 @@ export const calcDaysBetween = (d1, d2) => {
 
 	return ChronoUnit.DAYS.between(start, end);
 }
+
 export const dateFormat = (date = '1000-01-01') => {
 	const formatter = DateTimeFormatter.ofPattern('MMM d, yyyy').withLocale(Locale.ENGLISH);
 	const formattedDate = LocalDate.parse(date).format(formatter);
 
 	return formattedDate;
+}
+
+export const daysInOffice = (terms) => {
+	let days = 0;
+
+	for( let i = 0; i < terms.length; i++ ) {
+		days += calcDaysBetween(terms[i].start, terms[i].end);
+	}
+
+	return days;
 }
