@@ -1,4 +1,4 @@
-const getCongress = async (when) => {
+const getCongressData = async (when) => {
 	let url = `https://theunitedstates.io/congress-legislators/legislators-${when}.json`
 	
 	try {
@@ -9,16 +9,16 @@ const getCongress = async (when) => {
 	}
 }
 
-const getFullCongress = async () => {
-	let historical = await getCongress('historical');
-	let current = await getCongress('current');
+const getAllCongressData = async () => {
+	let historical = await getCongressData('historical');
+	let current = await getCongressData('current');
 
-	let fullCongress = historical.concat(current);
+	let allData = historical.concat(current);
 
-	return fullCongress;
+	return allData;
 }
 
-const filterByTerm = (congress, chamber) => {
+const filterByChamber = (congress, chamber) => {
 	let senators = [];
 	let representatives = [];
 	let senAndRep = [];
@@ -54,28 +54,28 @@ const filterByTerm = (congress, chamber) => {
 	}
 }
 
-const removeRepTerms = (senData) => {
-	let cleanedSenData = [];
+const filterChamberTerms = (data, chamber) => {
+	let filteredData = [];
 
-	for( let i = 0; i < senData.length; i++ ) {
-		let terms = senData[i].terms;
-		let cleanedTerms = [];
+	for( let i = 0; i < data.length; i++ ) {
+		let terms = data[i].terms;
+		let filteredTerms = [];
 
 		for( let j = 0; j < terms.length; j++ ) {
-			if( terms[j].type === 'sen') {
-				cleanedTerms.push(terms[j])
+			if( terms[j].type === chamber) {
+				filteredTerms.push(terms[j])
 			}
 		}
 
-		senData[i].terms = cleanedTerms;
-		cleanedSenData.push(senData[i]);
+		data[i].terms = filteredTerms;
+		filteredData.push(data[i]);
 	}
 
-	return cleanedSenData
+	return filteredData
 }
 
-export const getSenators = async () => {
-	return removeRepTerms( filterByTerm( await getFullCongress(), 'senate'));
+export const getSenateData = async () => {
+	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
 }
 
 export const createFullName = (f,n,m,l,s) => {
@@ -86,26 +86,56 @@ export const createWikipediaURL = (wiki) => {
 	return `https://en.wikipedia.org/wiki/${wiki.replace(/\s/g, '_')}`
 }
 
-export const sortSenateSeats = async () => {
-	const rawSenators = await getSenators();
-	let sortedSenators = {};
+export const sortSenatorsToSeats = (senData) => {
+	
+	let senateSeats = {};
 
-	for( let i = 0; i < rawSenators.length; i++ ) {
-		let senator = rawSenators[i];
+	for( let i = 0; i < senData.length; i++ ) {
+		let senator = senData[i];
 		let trackSeatIDs = {};
 		for( let j = 0; j < senator.terms.length; j++ ) {
 			let term = senator.terms[j];
-			let seatID = term.state + term.class
-			if( !sortedSenators[seatID]) {
-				sortedSenators[seatID] = [];
+			let seatID = term.state + term.class;
+			if( !senateSeats[seatID]) {
+				senateSeats[seatID] = [];
 			}
 			if( !trackSeatIDs[seatID]) {
 				trackSeatIDs[seatID] = true;
-				sortedSenators[seatID].push(senator);
+				senateSeats[seatID].push(senator);
 			}
 		}
 	}
 
-	console.log('sortedSenators', sortedSenators);
+	const sortedSeats = Object.keys(senateSeats)
+		.sort()
+		.reduce((accumulator, key) => {
+			accumulator[key] = senateSeats[key];
+
+			return accumulator;
+		}, {});
+
+	return sortedSeats;
+}
+
+export const filterSenatorSeatTerms = (senData) => {
+	const sortedSenators = JSON.parse(JSON.stringify( senData ));
+
+	for (let seat in sortedSenators) {
+		let senatorsInSeat = sortedSenators[seat];
+		for( let i = 0; i < senatorsInSeat.length; i++ ) {
+			let senatorInSeat = senatorsInSeat[i];
+			let terms = senatorInSeat.terms;
+			let cleanedTerms = [];
+			for( let j = 0; j < terms.length; j++ ) {
+				let term = terms[j];
+				let seatID = term.state + term.class;
+				if( seatID === seat ) {
+					cleanedTerms.push(term);
+				}
+			}
+			senatorsInSeat[i].terms = cleanedTerms;
+		}
+	}
+
 	return sortedSenators;
 }
