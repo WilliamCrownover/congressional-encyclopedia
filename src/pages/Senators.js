@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { SenatorRow } from "../components/SenatorRow";
-import { sortSenateSeats, createFullName, createWikipediaURL } from "../utils/utils"
+import { getSenateData, createFullName, createWikipediaURL } from "../utils/utils"
 
 export const Senators = () => {
-	const [fullCongress, setFullCongress] = useState([]);
+	const [senateData, setSenateData] = useState([]);
 
 	useEffect(() => {
 		const getData = async () => {
-			setFullCongress(await sortSenateSeats());
+			setSenateData(await getSenateData());
 		};
 
 		getData();
@@ -17,25 +17,28 @@ export const Senators = () => {
 		<>
 			<h1>Senator Data</h1>
 			<h2>All Current and Past U.S. Senators</h2>
-			{Object.keys(fullCongress).map( (key) => (
-				<table key={key}>
-					<tr>
-						<th>Image</th>
-						<th>Name</th>
-						<th>Birthday</th>
-						<th>Gender</th>
-						<th>State</th>
-						<th>Class</th>
-						<th>Party</th>
-						<th>Term Start Date</th>
-						<th>Age, Term Start</th>
-						<th>Term End Date</th>
-						<th>Age, Term End</th>
-						<th>Num of Terms</th>
-						<th>Days in Office</th>
-						<th>Wiki</th>
-					</tr>
-					{fullCongress[key].map( (senator) => (
+			{Object.keys(senateData).map( (seat) => (
+				<table key={seat}>
+					<thead>
+						<tr>
+							<th>Image</th>
+							<th>Name</th>
+							<th>Birthday</th>
+							<th>Gender</th>
+							<th>State</th>
+							<th>Class</th>
+							<th>Party</th>
+							<th>Term Start Date</th>
+							<th>Age, Term Start</th>
+							<th>Term End Date</th>
+							<th>Age, Term End</th>
+							<th>Num of Terms</th>
+							<th>Days in Office</th>
+							<th>Wiki</th>
+						</tr>
+					</thead>
+					{senateData[seat].map( (senator) => (
+						<tbody key={seat+senator.id.bioguide}>
 							<SenatorRow
 								bioguide={senator.id.bioguide}
 								fullName={createFullName(
@@ -50,6 +53,7 @@ export const Senators = () => {
 								terms={senator.terms}
 								wikipedia={createWikipediaURL(senator.id.wikipedia)}
 							/>
+						</tbody>
 					))}
 				</table>
 			))}
