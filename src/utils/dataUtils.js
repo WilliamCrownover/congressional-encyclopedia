@@ -136,6 +136,7 @@ const filterSenatorSeatTerms = (senData) => {
 			let senator = senatorsInSeat[i];
 			let terms = senator.terms;
 			let cleanedTerms = [];
+			let multipleSeats = false;
 
 			for( let j = 0; j < terms.length; j++ ) {
 				let term = terms[j];
@@ -143,6 +144,9 @@ const filterSenatorSeatTerms = (senData) => {
 
 				if( seatID === seat ) {
 					cleanedTerms.push(term);
+				} else if ( !multipleSeats ) {
+					senatorsInSeat[i].multipleSeats = true;
+					multipleSeats = true;
 				}
 			}
 

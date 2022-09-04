@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { dateFormat, daysInOffice, calcDaysBetween } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
 
-export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikipedia}) => {
+export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipleSeats, wikipedia}) => {
 	const [image, setImage] = useState();
 	const firstTerm = terms[0];
 	const lastTerm = terms[terms.length - 1];
@@ -21,7 +21,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 				<img 
 					src={image} 
 					alt={bioguide} 
-					height='70' 
+					height='50' 
 					onError={({ currentTarget }) => {
 						currentTarget.onerror = null;
 						currentTarget.src="https://bioguide.congress.gov/2b2b2e5c1b613f0aeb70f77accc91781-190.wp.jpg";
@@ -33,6 +33,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 			<td>{gender}</td>
 			<td>{lastTerm.state}</td>
 			<td>{lastTerm.class}</td>
+			<td>{multipleSeats && 'Yes'}</td>
 			<td>{lastTerm.party}</td>
 			<td>{dateFormat(firstTerm.start)}</td>
 			<td>{birthday && (calcDaysBetween(birthday, firstTerm.start) / 365).toFixed()}</td>

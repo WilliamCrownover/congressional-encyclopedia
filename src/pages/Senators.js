@@ -28,6 +28,7 @@ export const Senators = () => {
 							<th>Gender</th>
 							<th>State</th>
 							<th>Class</th>
+							<th>Multiple Seats</th>
 							<th>Party</th>
 							<th>Term Start Date</th>
 							<th>Age, Term Start</th>
@@ -52,6 +53,7 @@ export const Senators = () => {
 								birthday={senator.bio.birthday}
 								gender={senator.bio.gender}
 								terms={senator.terms}
+								multipleSeats={senator.multipleSeats}
 								wikipedia={createWikipediaURL(senator.id.wikipedia)}
 							/>
 						</tbody>
