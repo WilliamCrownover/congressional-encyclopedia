@@ -3,9 +3,11 @@ import { Locale } from '@js-joda/locale_en-us'
 
 export const calcDaysBetween = (d1, d2) => {
 	const start = new LocalDate.parse(d1);
-	const end = new LocalDate.parse(d2).isAfter( new LocalDate.now()) ? new LocalDate.now() : new LocalDate.parse(d2);
+	const end = new LocalDate.parse(d2);
+	const today = new LocalDate.now()
+	const cappedEnd = end.isAfter(today) ? today : end;
 
-	return ChronoUnit.DAYS.between(start, end);
+	return ChronoUnit.DAYS.between(start, cappedEnd);
 }
 
 export const dateFormat = (date = '1000-01-01') => {

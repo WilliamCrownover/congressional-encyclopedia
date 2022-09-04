@@ -1,47 +1,56 @@
+// Fetch request for raw congressional data
 const getCongressData = async (when) => {
-	let url = `https://theunitedstates.io/congress-legislators/legislators-${when}.json`
+	let url = `https://theunitedstates.io/congress-legislators/legislators-${when}.json`;
 	
 	try {
 		let res = await fetch(url);
 		return await res.json();
 	} catch (error) {
 		console.log(error);
-	}
+	};
 }
 
+// Combines historical and current congressional data together
 const getAllCongressData = async () => {
-	let historical = await getCongressData('historical');
-	let current = await getCongressData('current');
+	let historicalCongress = await getCongressData('historical');
+	let currentCongress = await getCongressData('current');
 
-	let allData = historical.concat(current);
+	let allData = historicalCongress.concat(currentCongress);
 
 	return allData;
 }
 
-const filterByChamber = (congress, chamber) => {
+// Filter the congress members into the chambers they served in. Senate, House, or both
+const filterByChamber = (congressData, chamber) => {
 	let senators = [];
 	let representatives = [];
 	let senAndRep = [];
 
-	for( let i = 0; i < congress.length; i++ ) {
-		let wasSen = false;
-		let wasRep = false;
-		for( let j = 0; j < congress[i].terms.length; j++ ) {
-			if( congress[i].terms[j].type === 'sen' && wasSen === false) {
-				senators.push(congress[i]);
-				wasSen = true;
-			} else if ( congress[i].terms[j].type === 'rep' && wasRep === false ) {
-				representatives.push(congress[i]);
-				wasRep = true;
+	for( let i = 0; i < congressData.length; i++ ) {
+		let wasSenator = false;
+		let wasRepresentative = false;
+		let congressPerson = congressData[i]
+		let terms = congressPerson.terms;
+
+		for( let j = 0; j < terms.length; j++ ) {
+			let termChamber = terms[j].type;
+
+			if( termChamber === 'sen' && wasSenator === false) {
+				senators.push(congressPerson);
+				wasSenator = true;
+			} else if ( termChamber === 'rep' && wasRepresentative === false ) {
+				representatives.push(congressPerson);
+				wasRepresentative = true;
 			}
 
-			if ( wasSen && wasRep ) {
-				senAndRep.push(congress[i]);
+			if ( wasSenator && wasRepresentative ) {
+				senAndRep.push(congressPerson);
 				break;
 			}
 		}
 	}
 
+	// Send back the requested chamber
 	switch(chamber) {
 		case 'senate':
 			return senators;
@@ -54,16 +63,21 @@ const filterByChamber = (congress, chamber) => {
 	}
 }
 
+// Leave only the terms served in either the Senate or House
 const filterChamberTerms = (data, chamber) => {
 	let filteredData = [];
 
 	for( let i = 0; i < data.length; i++ ) {
-		let terms = data[i].terms;
+		let congressPerson = data[i]
+		let terms = congressPerson.terms;
 		let filteredTerms = [];
 
 		for( let j = 0; j < terms.length; j++ ) {
-			if( terms[j].type === chamber) {
-				filteredTerms.push(terms[j])
+			let term = terms[j];
+			let termChamber = term.type;
+
+			if( termChamber === chamber) {
+				filteredTerms.push(term)
 			}
 		}
 
@@ -74,19 +88,24 @@ const filterChamberTerms = (data, chamber) => {
 	return filteredData
 }
 
+// Create Senate seats and put Senators into those seats
 const sortSenatorsToSeats = (senData) => {
-	
 	let senateSeats = {};
 
 	for( let i = 0; i < senData.length; i++ ) {
 		let senator = senData[i];
 		let trackSeatIDs = {};
+
 		for( let j = 0; j < senator.terms.length; j++ ) {
 			let term = senator.terms[j];
 			let seatID = term.state + term.class;
+
+			// If the seat doesn't exist yet, add it
 			if( !senateSeats[seatID]) {
 				senateSeats[seatID] = [];
 			}
+
+			// Check if the senator was assigned to a seat, assign if not
 			if( !trackSeatIDs[seatID]) {
 				trackSeatIDs[seatID] = true;
 				senateSeats[seatID].push(senator);
@@ -94,6 +113,7 @@ const sortSenatorsToSeats = (senData) => {
 		}
 	}
 
+	// Sort the seats alphabetically
 	const sortedSeats = Object.keys(senateSeats)
 		.sort()
 		.reduce((accumulator, key) => {
@@ -105,22 +125,27 @@ const sortSenatorsToSeats = (senData) => {
 	return sortedSeats;
 }
 
+// For each senator in a seat, only keep the terms they served in that seat
 const filterSenatorSeatTerms = (senData) => {
 	const sortedSenators = JSON.parse(JSON.stringify( senData ));
 
 	for (let seat in sortedSenators) {
 		let senatorsInSeat = sortedSenators[seat];
+
 		for( let i = 0; i < senatorsInSeat.length; i++ ) {
-			let senatorInSeat = senatorsInSeat[i];
-			let terms = senatorInSeat.terms;
+			let senator = senatorsInSeat[i];
+			let terms = senator.terms;
 			let cleanedTerms = [];
+
 			for( let j = 0; j < terms.length; j++ ) {
 				let term = terms[j];
 				let seatID = term.state + term.class;
+
 				if( seatID === seat ) {
 					cleanedTerms.push(term);
 				}
 			}
+
 			senatorsInSeat[i].terms = cleanedTerms;
 		}
 	}
@@ -128,6 +153,7 @@ const filterSenatorSeatTerms = (senData) => {
 	return sortedSenators;
 }
 
+// Process the data for US Senators
 export const getSenateData = async () => {
 	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
 }

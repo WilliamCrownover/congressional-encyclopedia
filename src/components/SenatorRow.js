@@ -4,6 +4,8 @@ import { bioImage } from '../utils/imageUtils';
 
 export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikipedia}) => {
 	const [image, setImage] = useState();
+	const firstTerm = terms[0];
+	const lastTerm = terms[terms.length - 1];
 
 	useEffect(() => {
 		const getData = async () => {
@@ -29,13 +31,13 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, wikiped
 			<td>{fullName}</td>
 			<td>{birthday && dateFormat(birthday)}</td>
 			<td>{gender}</td>
-			<td>{terms[terms.length - 1].state}</td>
-			<td>{terms[terms.length - 1].class}</td>
-			<td>{terms[terms.length - 1].party}</td>
-			<td>{dateFormat(terms[0].start)}</td>
-			<td>{birthday && (calcDaysBetween(birthday, terms[0].start) / 365).toFixed()}</td>
-			<td>{dateFormat(terms[terms.length - 1].end)}</td>
-			<td>{birthday && (calcDaysBetween(birthday, terms[terms.length - 1].end) / 365).toFixed()}</td>
+			<td>{lastTerm.state}</td>
+			<td>{lastTerm.class}</td>
+			<td>{lastTerm.party}</td>
+			<td>{dateFormat(firstTerm.start)}</td>
+			<td>{birthday && (calcDaysBetween(birthday, firstTerm.start) / 365).toFixed()}</td>
+			<td>{dateFormat(lastTerm.end)}</td>
+			<td>{birthday && (calcDaysBetween(birthday, lastTerm.end) / 365).toFixed()}</td>
 			<td>{terms.length}</td>
 			<td>{`${daysInOffice(terms)} Days`}</td>
 			<td>
