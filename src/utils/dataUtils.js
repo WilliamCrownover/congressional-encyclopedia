@@ -74,19 +74,7 @@ const filterChamberTerms = (data, chamber) => {
 	return filteredData
 }
 
-export const getSenateData = async () => {
-	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
-}
-
-export const createFullName = (f,n,m,l,s) => {
-	return `${f}${n ? ` "${n}"` : ''} ${m} ${l} ${s}`.replace(/\s\s/g, ' ');
-}
-
-export const createWikipediaURL = (wiki) => {
-	return `https://en.wikipedia.org/wiki/${wiki.replace(/\s/g, '_')}`
-}
-
-export const sortSenatorsToSeats = (senData) => {
+const sortSenatorsToSeats = (senData) => {
 	
 	let senateSeats = {};
 
@@ -117,7 +105,7 @@ export const sortSenatorsToSeats = (senData) => {
 	return sortedSeats;
 }
 
-export const filterSenatorSeatTerms = (senData) => {
+const filterSenatorSeatTerms = (senData) => {
 	const sortedSenators = JSON.parse(JSON.stringify( senData ));
 
 	for (let seat in sortedSenators) {
@@ -138,4 +126,8 @@ export const filterSenatorSeatTerms = (senData) => {
 	}
 
 	return sortedSenators;
+}
+
+export const getSenateData = async () => {
+	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
 }

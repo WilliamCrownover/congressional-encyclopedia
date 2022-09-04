@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { SenatorRow } from "../components/SenatorRow";
-import { getSenateData, createFullName, createWikipediaURL } from "../utils/utils"
+import { getSenateData } from "../utils/dataUtils"
+import { createFullName, createWikipediaURL } from "../utils/stringUtils"
 
 export const Senators = () => {
 	const [senateData, setSenateData] = useState([]);
