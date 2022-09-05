@@ -19,7 +19,7 @@ export const Senators = () => {
 			<h1>Senator Data</h1>
 			<h2>All Current and Past U.S. Senators</h2>
 			{Object.keys(senateData).map( (seat) => (
-				<table key={seat} style={{ width: '1700px'}}>
+				<table key={seat} style={{ width: '1170px'}}>
 					<thead>
 						<tr>
 							<th>Image</th>
