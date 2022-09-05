@@ -6,6 +6,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 	const [image, setImage] = useState();
 	const firstTerm = terms[0];
 	const lastTerm = terms[terms.length - 1];
+	const firstCongressDate = '1789-03-04'
 
 	useEffect(() => {
 		const getData = async () => {
@@ -21,7 +22,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 				<img 
 					src={image} 
 					alt={bioguide} 
-					height='50' 
+					height='35' 
 					onError={({ currentTarget }) => {
 						currentTarget.onerror = null;
 						currentTarget.src="https://bioguide.congress.gov/2b2b2e5c1b613f0aeb70f77accc91781-190.wp.jpg";
@@ -44,6 +45,21 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 			<td>
 				<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
 			</td>
+			
+			<div style={{ display: 'flex', position: 'relative'}}>
+				{terms.map( (term) => (
+					<div 
+						key={`${term.state}${term.class}${term.start}`}
+						className={'alternatingColors'}
+						style={{ 
+							position: 'absolute', 
+							left: `${calcDaysBetween(firstCongressDate, term.start)/50}px`,
+							width: `${calcDaysBetween(term.start, term.end)/50}px`,
+							height: '40px'
+						}}
+					/>						
+				))}
+			</div>
 		</tr>
 	)
 };
