@@ -152,6 +152,13 @@ const filterSenatorSeatTerms = (senData) => {
 
 			senatorsInSeat[i].terms = cleanedTerms;
 		}
+
+		// Sort the terms by start date for better consistency
+		const sortedTerms = senatorsInSeat.sort((a, b) => {
+			return new Date( a.terms[0].start) - new Date( b.terms[0].start)
+		});
+
+		sortedSenators[seat] = sortedTerms;
 	}
 
 	return sortedSenators;
