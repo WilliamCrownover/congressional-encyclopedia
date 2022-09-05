@@ -168,3 +168,8 @@ const filterSenatorSeatTerms = (senData) => {
 export const getSenateData = async () => {
 	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
 }
+
+// Process the data for US Representatives
+export const getHouseData = async () => {
+	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
+}
