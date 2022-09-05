@@ -23,6 +23,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 
 	return (
 		<tr>
+			{/* Image */}
 			<td style={{ width: '10px' }}>
 				<img 
 					src={image} 
@@ -34,23 +35,38 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 					}} 
 				/>
 			</td>
+			{/* Name */}
 			<td style={cellWidthNames}>{fullName}</td>
+			{/* Birthday */}
 			<td style={cellWidthDate}>{birthday && dateFormat(birthday)}</td>
-			<td style={cellWidthSmall}>{gender}</td>
+			{/* Gender */}
+			<td style={cellWidthSmall} className={`${gender === 'M' ? 'male' : 'female'}`}>{gender}</td>
+			{/* State */}
 			<td style={cellWidthSmall}>{lastTerm.state}</td>
+			{/* Class */}
 			<td style={cellWidthSmall}>{lastTerm.class}</td>
-			<td style={cellWidthSmall}>{multipleSeats && 'Yes'}</td>
+			{/* Multiple Seats */}
+			<td style={cellWidthSmall} className={`${multipleSeats && 'multiseat'}`}>{multipleSeats && multipleSeats}</td>
+			{/* Party */}
 			<td style={cellWidthParty} className={`${lastTerm.party ? lastTerm.party.replace('.', '').replaceAll(' ', '').toLowerCase() : 'blankparty'}`} >{lastTerm.party}</td>
+			{/* Term Start */}
 			<td style={cellWidthDate}>{dateFormat(firstTerm.start)}</td>
+			{/* Age at Term Start */}
 			<td style={cellWidthSmall}>{birthday && (calcDaysBetween(birthday, firstTerm.start) / 365).toFixed()}</td>
+			{/* Term End */}
 			<td style={cellWidthDate}>{dateFormat(lastTerm.end)}</td>
+			{/* Age at Term End */}
 			<td style={cellWidthSmall}>{birthday && (calcDaysBetween(birthday, lastTerm.end) / 365).toFixed()}</td>
+			{/* Number of Terms */}
 			<td style={cellWidthSmall}>{terms.length}</td>
+			{/* Days Served */}
 			<td style={cellWidthDays}>{`${daysInOffice(terms)} Days`}</td>
+			{/* Wikipedia Link */}
 			<td>
 				<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
 			</td>
 			
+			{/* Timeline */}
 			<div style={{ display: 'flex', position: 'relative'}}>
 				{terms.map( (term) => (
 					<div key={`${term.state}${term.class}${term.start}`}>

@@ -3,6 +3,10 @@
   box-sizing: border-box;
 }
 
+body {
+  margin: 0px 20px 20px 20px;
+}
+
 table {
   border-spacing: 0px;
   padding: 0;
@@ -103,4 +107,17 @@ td {
 }
 .lawandorder {
   background-color: rgb(23, 153, 136);
+}
+
+/* Gender color */
+.male {
+  background-color: rgb(221, 221, 255);
+}
+.female {
+  background-color: rgb(255, 221, 252);
+}
+
+/* Multiple seats */
+.multiseat {
+  background-color: rgb(227, 255, 221);
 }

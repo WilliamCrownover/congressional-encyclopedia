@@ -145,7 +145,7 @@ const filterSenatorSeatTerms = (senData) => {
 				if( seatID === seat ) {
 					cleanedTerms.push(term);
 				} else if ( !multipleSeats ) {
-					senatorsInSeat[i].multipleSeats = true;
+					senatorsInSeat[i].multipleSeats = 'Yes';
 					multipleSeats = true;
 				}
 			}
