@@ -35,7 +35,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 			<td>{lastTerm.state}</td>
 			<td>{lastTerm.class}</td>
 			<td>{multipleSeats && 'Yes'}</td>
-			<td>{lastTerm.party}</td>
+			<td className={`${lastTerm.party ? lastTerm.party.replace('.', '').replaceAll(' ', '').toLowerCase() : 'blankparty'}`} >{lastTerm.party}</td>
 			<td>{dateFormat(firstTerm.start)}</td>
 			<td>{birthday && (calcDaysBetween(birthday, firstTerm.start) / 365).toFixed()}</td>
 			<td>{dateFormat(lastTerm.end)}</td>
@@ -50,7 +50,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 				{terms.map( (term) => (
 					<div 
 						key={`${term.state}${term.class}${term.start}`}
-						className={'alternatingColors'}
+						className={`alternatingColors ${term.party ? term.party.replace('.', '').replaceAll(' ', '').toLowerCase() : 'blankparty'}`}
 						style={{ 
 							position: 'absolute', 
 							left: `${calcDaysBetween(firstCongressDate, term.start)/50}px`,

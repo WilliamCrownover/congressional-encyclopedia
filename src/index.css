@@ -4,7 +4,7 @@
 }
 
 table {
-  border-spacing: 0px!important;
+  border-spacing: 0px;
   padding: 0;
 }
 
@@ -16,10 +16,84 @@ td {
   line-height:0;
 }
 
-.alternatingColors:nth-child(odd) {
-  background-color: gray;
+.alternatingColors {
+  border: 1px solid black;
+  background-color: aqua;
 }
 
-.alternatingColors:nth-child(even) {
-  background-color: black;
+/* Color the Political Parties */
+.republican,
+.crawfordrepublican {
+  background-color: red;
+}
+.liberalrepublican {
+  background-color: rgb(136, 0, 0);
+}
+.silverrepublican {
+  background-color: rgb(255, 174, 174);
+}
+.democrat {
+  background-color: blue;
+}
+.nullifier {
+  background-color: rgb(0, 0, 163);
+}
+.independent,
+.unknown,
+.blankparty {
+  background-color: rgb(143, 143, 143);
+}
+.whig {
+  background-color: rgb(255, 230, 0);
+}
+.pro-administration {
+  background-color: white;
+}
+.anti-administration {
+  background-color: rgb(43, 43, 43);
+}
+.federalist {
+  background-color: rgb(195, 0, 255);
+}
+.democraticrepublican {
+  background-color: rgb(0, 150, 0);
+}
+.adams, 
+.anti-jacksonian,
+.indrepublican-democrat {
+  background-color: rgb(255, 136, 0);
+}
+.jackson {
+  background-color: rgb(115, 136, 255);
+}
+.liberty {
+  background-color: rgb(34, 214, 190);
+}
+.freesoil {
+  background-color: greenyellow;
+}
+.unionist,
+.unconditionalunionist {
+  background-color: rgb(255, 136, 255);
+}
+.populist {
+  background-color: rgb(144, 205, 255);
+}
+.american {
+  background-color: rgb(240, 42, 240);
+}
+.farmer-labor {
+  background-color: rgb(42, 240, 174);
+}
+.progressive {
+  background-color: rgb(0, 90, 0);
+}
+.silver {
+  background-color: rgb(82, 82, 82);
+}
+.conservative {
+  background-color: rgb(230, 84, 0);
+}
+.lawandorder {
+  background-color: rgb(23, 153, 136);
 }
