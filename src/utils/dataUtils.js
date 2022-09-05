@@ -88,36 +88,36 @@ const filterChamberTerms = (data, chamber) => {
 	return filteredData
 }
 
-// Create Senate seats and put Senators into those seats
-const sortSenatorsToSeats = (senData) => {
-	let senateSeats = {};
+// Create Chamber seats and put Members into those seats
+const sortMembersToSeats = (data, type) => {
+	let chamberSeats = {};
 
-	for( let i = 0; i < senData.length; i++ ) {
-		let senator = senData[i];
+	for( let i = 0; i < data.length; i++ ) {
+		let member = data[i];
 		let trackSeatIDs = {};
 
-		for( let j = 0; j < senator.terms.length; j++ ) {
-			let term = senator.terms[j];
-			let seatID = term.state + term.class;
+		for( let j = 0; j < member.terms.length; j++ ) {
+			let term = member.terms[j];
+			let seatID = `${term.state}${term[type].toString().length === 1 ? `0${term[type]}` : term[type]}`;
 
 			// If the seat doesn't exist yet, add it
-			if( !senateSeats[seatID]) {
-				senateSeats[seatID] = [];
+			if( !chamberSeats[seatID]) {
+				chamberSeats[seatID] = [];
 			}
 
-			// Check if the senator was assigned to a seat, assign if not
+			// Check if the member was assigned to a seat, assign if not
 			if( !trackSeatIDs[seatID]) {
 				trackSeatIDs[seatID] = true;
-				senateSeats[seatID].push(senator);
+				chamberSeats[seatID].push(member);
 			}
 		}
 	}
 
 	// Sort the seats alphabetically
-	const sortedSeats = Object.keys(senateSeats)
+	const sortedSeats = Object.keys(chamberSeats)
 		.sort()
 		.reduce((accumulator, key) => {
-			accumulator[key] = senateSeats[key];
+			accumulator[key] = chamberSeats[key];
 
 			return accumulator;
 		}, {});
@@ -125,51 +125,51 @@ const sortSenatorsToSeats = (senData) => {
 	return sortedSeats;
 }
 
-// For each senator in a seat, only keep the terms they served in that seat
-const filterSenatorSeatTerms = (senData) => {
-	const sortedSenators = JSON.parse(JSON.stringify( senData ));
+// For each Member in a seat, only keep the terms they served in that seat
+const filterMemberSeatTerms = (data, type) => {
+	const filteredSeats = JSON.parse(JSON.stringify( data ));
 
-	for (let seat in sortedSenators) {
-		let senatorsInSeat = sortedSenators[seat];
+	for (let seat in filteredSeats) {
+		let membersInSeat = filteredSeats[seat];
 
-		for( let i = 0; i < senatorsInSeat.length; i++ ) {
-			let senator = senatorsInSeat[i];
-			let terms = senator.terms;
+		for( let i = 0; i < membersInSeat.length; i++ ) {
+			let member = membersInSeat[i];
+			let terms = member.terms;
 			let cleanedTerms = [];
 			let multipleSeats = false;
 
 			for( let j = 0; j < terms.length; j++ ) {
 				let term = terms[j];
-				let seatID = term.state + term.class;
+				let seatID = `${term.state}${term[type].toString().length === 1 ? `0${term[type]}` : term[type]}`;
 
 				if( seatID === seat ) {
 					cleanedTerms.push(term);
 				} else if ( !multipleSeats ) {
-					senatorsInSeat[i].multipleSeats = 'Yes';
+					membersInSeat[i].multipleSeats = 'Yes';
 					multipleSeats = true;
 				}
 			}
 
-			senatorsInSeat[i].terms = cleanedTerms;
+			membersInSeat[i].terms = cleanedTerms;
 		}
 
 		// Sort the terms by start date for better consistency
-		const sortedTerms = senatorsInSeat.sort((a, b) => {
+		const sortedTerms = membersInSeat.sort((a, b) => {
 			return new Date( a.terms[0].start) - new Date( b.terms[0].start)
 		});
 
-		sortedSenators[seat] = sortedTerms;
+		filteredSeats[seat] = sortedTerms;
 	}
 
-	return sortedSenators;
+	return filteredSeats;
 }
 
 // Process the data for US Senators
 export const getSenateData = async () => {
-	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
+	return filterMemberSeatTerms( sortMembersToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen'), 'class'), 'class');
 }
 
 // Process the data for US Representatives
 export const getHouseData = async () => {
-	return filterSenatorSeatTerms( sortSenatorsToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen')));
+	return filterMemberSeatTerms( sortMembersToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'house'), 'rep'), 'district'), 'district');
 }

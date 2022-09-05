@@ -25,7 +25,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 		<tr>
 			{/* Image */}
 			<td style={{ width: '10px' }}>
-				<img 
+				{/* <img 
 					src={image} 
 					alt={bioguide} 
 					height='30' 
@@ -33,7 +33,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 						currentTarget.onerror = null;
 						currentTarget.src="https://bioguide.congress.gov/2b2b2e5c1b613f0aeb70f77accc91781-190.wp.jpg";
 					}} 
-				/>
+				/> */}
 			</td>
 			{/* Name */}
 			<td style={cellWidthNames}>{fullName}</td>
@@ -44,7 +44,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 			{/* State */}
 			<td style={cellWidthSmall}>{lastTerm.state}</td>
 			{/* Class */}
-			<td style={cellWidthSmall}>{lastTerm.class}</td>
+			<td style={cellWidthSmall}>{lastTerm.class ? lastTerm.class : lastTerm.district}</td>
 			{/* Multiple Seats */}
 			<td style={cellWidthSmall} className={`${multipleSeats && 'multiseat'}`}>{multipleSeats && multipleSeats}</td>
 			{/* Party */}

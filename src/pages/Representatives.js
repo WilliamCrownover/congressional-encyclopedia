@@ -27,7 +27,7 @@ export const Representatives = () => {
 							<th>Birthday</th>
 							<th>Gender</th>
 							<th>State</th>
-							<th>Class</th>
+							<th>Class/ District</th>
 							<th>Multiple Seats</th>
 							<th>Party</th>
 							<th>Term Start Date</th>
@@ -54,7 +54,7 @@ export const Representatives = () => {
 								gender={rep.bio.gender}
 								terms={rep.terms}
 								multipleSeats={rep.multipleSeats}
-								wikipedia={createWikipediaURL(rep.id.wikipedia)}
+								wikipedia={rep.id.wikipedia && createWikipediaURL(rep.id.wikipedia)}
 							/>
 						</tbody>
 					))}
