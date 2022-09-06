@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { dateFormat, daysInOffice, calcDaysBetween } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
 
-export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipleSeats, wikipedia}) => {
+export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, terms, multipleSeats, wikipedia}) => {
 	const [image, setImage] = useState();
 	const firstTerm = terms[0];
 	const lastTerm = terms[terms.length - 1];
@@ -24,17 +24,19 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 	return (
 		<tr>
 			{/* Image */}
-			<td style={{ width: '10px' }}>
-				{/* <img 
-					src={image} 
-					alt={bioguide} 
-					height='30' 
-					onError={({ currentTarget }) => {
-						currentTarget.onerror = null;
-						currentTarget.src="https://bioguide.congress.gov/2b2b2e5c1b613f0aeb70f77accc91781-190.wp.jpg";
-					}} 
-				/> */}
-			</td>
+			{!allStates &&
+				<td style={{ width: '10px' }}>
+					<img 
+						src={image} 
+						alt={bioguide} 
+						height='30' 
+						onError={({ currentTarget }) => {
+							currentTarget.onerror = null;
+							currentTarget.src="https://bioguide.congress.gov/2b2b2e5c1b613f0aeb70f77accc91781-190.wp.jpg";
+						}} 
+					/>
+				</td>
+			}
 			{/* Name */}
 			<td style={cellWidthNames}>{fullName}</td>
 			{/* Birthday */}

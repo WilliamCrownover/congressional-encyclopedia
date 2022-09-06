@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { SenatorRow } from "../components/SenatorRow";
 import { getHouseData } from "../utils/dataUtils"
 import { createFullName, createWikipediaURL } from "../utils/stringUtils"
 
 export const Representatives = () => {
+	const { state } = useParams();
+	const allStates = state.toUpperCase() === 'ALL';
 	const [houseData, setHouseData] = useState([]);
 
 	useEffect(() => {
 		const getData = async () => {
-			setHouseData(await getHouseData());
+			setHouseData(await getHouseData(state));
 		};
 
 		getData();
-	}, []);
+	}, [state]);
 
 	return (
 		<>
@@ -22,7 +25,7 @@ export const Representatives = () => {
 				<table key={seat} style={{ width: '1170px'}}>
 					<thead>
 						<tr>
-							<th>Image</th>
+							{!allStates && <th>Image</th>}
 							<th>Name</th>
 							<th>Birthday</th>
 							<th>Gender</th>
@@ -42,6 +45,7 @@ export const Representatives = () => {
 					{houseData[seat].map( (rep) => (
 						<tbody key={seat+rep.id.bioguide}>
 							<SenatorRow
+								allStates={allStates}
 								bioguide={rep.id.bioguide}
 								fullName={createFullName(
 									rep.name.first || '',

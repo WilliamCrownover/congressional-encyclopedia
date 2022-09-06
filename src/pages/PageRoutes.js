@@ -10,7 +10,7 @@ export const PageRoutes = () => {
 			<Router>
 				<Routes>
 					<Route exact path='/senate' element={<Senators/>} />
-					<Route exact path='/house' element={<Representatives/>} />
+					<Route path='/house/:state' element={<Representatives/>} />
 				</Routes>
 			</Router>
 		</>

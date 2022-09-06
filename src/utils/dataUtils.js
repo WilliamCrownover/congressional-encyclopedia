@@ -164,12 +164,28 @@ const filterMemberSeatTerms = (data, type) => {
 	return filteredSeats;
 }
 
+const filterByState = (data, state) => {
+	let stateSeats = {};
+
+	if( state.toUpperCase() !== 'ALL') {
+		for( let seat in data ) {
+			if( seat.substring(0,2) === state.toUpperCase() ) {
+				stateSeats[seat] = data[seat];
+			}
+		}
+
+		return stateSeats;
+	} else {
+		return data;
+	}
+}
+
 // Process the data for US Senators
 export const getSenateData = async () => {
 	return filterMemberSeatTerms( sortMembersToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'senate'), 'sen'), 'class'), 'class');
 }
 
 // Process the data for US Representatives
-export const getHouseData = async () => {
-	return filterMemberSeatTerms( sortMembersToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'house'), 'rep'), 'district'), 'district');
+export const getHouseData = async ( state ) => {
+	return filterByState( filterMemberSeatTerms( sortMembersToSeats( filterChamberTerms( filterByChamber( await getAllCongressData(), 'house'), 'rep'), 'district'), 'district'), state);
 }
