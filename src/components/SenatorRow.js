@@ -11,7 +11,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 	const cellWidthDate = { width: '90px' };
 	const cellWidthDays = { width: '80px' };
 	const cellWidthNames = { width: '230px' };
-	const cellWidthParty = { width: '170px' };
+	const cellWidthParty = { width: '180px' };
 
 	useEffect(() => {
 		const getData = async () => {
@@ -63,7 +63,7 @@ export const SenatorRow = ({bioguide, fullName, birthday, gender, terms, multipl
 			<td style={cellWidthDays}>{`${daysInOffice(terms)} Days`}</td>
 			{/* Wikipedia Link */}
 			<td>
-				<a href={wikipedia} target="_blank" rel="noreferrer">Wikipedia</a>
+				<a href={wikipedia} target="_blank" rel="noreferrer">Wiki</a>
 			</td>
 			
 			{/* Timeline */}
