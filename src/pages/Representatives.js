@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { SenatorRow } from "../components/SenatorRow";
 import { getHouseData } from "../utils/dataUtils"
 import { createFullName, createWikipediaURL } from "../utils/stringUtils"
+import { statesList } from "../data/states";
 
 export const Representatives = () => {
 	const { state } = useParams();
@@ -20,7 +21,15 @@ export const Representatives = () => {
 	return (
 		<>
 			<h1>Representative Data</h1>
-			<h2>All Current and Past U.S. Representatives</h2>
+
+			<div className={'linksBox'} >
+				{Object.keys(statesList).map( (abbrv) => (
+					<Link className={'stateLink'} key={abbrv} to={`/house/${abbrv}`} rel="noreferrer">{statesList[abbrv]}</Link>
+				))}
+			</div>
+
+			<h2>All Current and Past U.S. Representatives {!allStates && `from ${statesList[state.toUpperCase()]}`} </h2>
+			
 			{Object.keys(houseData).map( (seat) => (
 				<table key={seat} style={{ width: '1170px'}}>
 					<thead>
