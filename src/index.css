@@ -25,10 +25,11 @@ th {
   border: 2px solid rgb(189, 189, 189);
   background-color: rgb(224, 224, 224);
   font-size: .8rem;
+  height: 35px;
 }
 
 td {
-  height: 30px;
+  height: 35px;
   border: 1px solid black;
   padding: 0;
   padding-left: 5px;
@@ -36,9 +37,15 @@ td {
   font-size: .8rem;
 }
 
-.alternatingColors {
-  border: 1px solid black;
-  background-color: rgb(0, 238, 255);
+.timelineContainer {
+  display: flex;
+  position: relative;
+}
+
+.timelineBlock {
+  border: 1px solid rgb(61, 61, 61);
+  position: absolute;
+  height: 35px;
 }
 
 /* Color the Political Parties */
