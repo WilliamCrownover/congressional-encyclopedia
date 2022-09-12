@@ -42,10 +42,44 @@ td {
   position: relative;
 }
 
+.timelineLine,
+.timelineLineTerm,
+.timelineLineDecade,
+.timelineLineCentury,
+.warLines,
+.civilRightsAct {
+  position: absolute;
+  width: 1px;
+  background-color: none;
+  border-left: 1px solid rgb(241, 241, 241);
+  top: -35px;
+  z-index: 900;
+}
+.timelineLineTerm {
+  border-left: 1px solid rgb(177, 177, 177);
+}
+.timelineLineDecade {
+  border-left: 1px solid rgb(0, 0, 0);
+}
+.timelineLineCentury {
+  border-left: 2px solid rgb(0, 0, 0);
+}
+.warLines {
+  border-left: 2px solid rgb(182, 0, 0);
+  border-right: 2px solid rgb(182, 0, 0);
+  background-color: rgb(182, 0, 0, 0.1);
+  z-index: 975;
+}
+.civilRightsAct {
+  border-left: 2px solid rgb(182, 0, 182);
+  z-index: 975;
+}
+
 .timelineBlock {
-  border: 1px solid rgb(61, 61, 61);
+  border: 1px solid rgb(0, 0, 0);
   position: absolute;
   height: 35px;
+  z-index: 950;
 }
 
 /* Color the Political Parties */

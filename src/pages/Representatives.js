@@ -76,6 +76,8 @@ export const Representatives = () => {
 								index={index}
 								multipleSeats={rep.multipleSeats}
 								wikipedia={rep.id.wikipedia && createWikipediaURL(rep.id.wikipedia)}
+								numberOfReps={houseData[seat].length}
+								currentRep={index}
 								hidden={hide}
 							/>
 						</tbody>
