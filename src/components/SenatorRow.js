@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
+import { LocalDate } from '@js-joda/core'
+import { TimelineRange } from '../components/TimelineRange';
 import { dateFormat, daysInOffice, calcDaysBetween } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
+import { typicalWars, americanIndianWars, miscWars } from '../data/wars';
 
 export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, terms, index, multipleSeats, wikipedia, numberOfReps, currentRep, hidden}) => {
 	const [image, setImage] = useState();
 	const firstTerm = terms[0];
 	const lastTerm = terms[terms.length - 1];
 	const firstCongressDate = '1789-03-04';
+	const today = new LocalDate.now().toString();
 	const hideSpacing = hidden ? 45 : 0;
 	const [windowWidth, setWindowWidth] = useState(document.documentElement.clientWidth);
 	const widthMultiply = hidden ? windowWidth/92000 : 0.013;
@@ -16,6 +20,12 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 	const cellWidthNames = { width: '230px' };
 	const cellWidthParty = { width: '180px' };
 	const timelineGridHeight = { height: `${hidden ? 35 : 35*(numberOfReps + 1)}px` };
+	const alignmentProps = {
+		firstCongressDate,
+		hideSpacing,
+		widthMultiply,
+		timelineGridHeight
+	}
 
 	useEffect(() => {
 		const getData = async () => {
@@ -97,138 +107,63 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 				{/* Timeline Grid */}
 				{currentRep === 0 &&
 					<>
-						{[...Array(234)].map( (e, i ) => (
+						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365))].map( (e, i ) => (
 							<div 
 								className={'timelineLine'}
 								style={{
-									left: `${365*i*widthMultiply + hideSpacing + 303*widthMultiply}px`,
+									left: `${365*i*widthMultiply + hideSpacing + calcDaysBetween(firstCongressDate, '1790-01-01')*widthMultiply}px`,
 									...timelineGridHeight
 								}}
 							/>
 						))}
-						{[...Array(23*5+3)].map( (e, i ) => (
+						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/2))].map( (e, i ) => (
 							<div 
 								className={'timelineLineTerm'}
 								style={{
-									left: `${365*i*widthMultiply*2 + hideSpacing - 62*widthMultiply}px`,
+									left: `${365*i*widthMultiply*2 + hideSpacing + calcDaysBetween(firstCongressDate, '1791-01-01')*widthMultiply}px`,
 									...timelineGridHeight
 								}}
 							/>
 						))}
-						{[...Array(24)].map( (e, i ) => (
+						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/10))].map( (e, i ) => (
 							<div 
 								className={'timelineLineDecade'}
 								style={{
-									left: `${365*i*widthMultiply*10 + hideSpacing + 303*widthMultiply}px`,
+									left: `${365*i*widthMultiply*10 + hideSpacing + calcDaysBetween(firstCongressDate, '1790-01-01')*widthMultiply}px`,
 									...timelineGridHeight
 								}}
 							/>
 						))}
-						{[...Array(3)].map( (e, i ) => (
+						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/100))].map( (e, i ) => (
 							<div 
 								className={'timelineLineCentury'}
 								style={{
-									left: `${365*i*widthMultiply*100 + hideSpacing + 4017*widthMultiply}px`,
+									left: `${365*i*widthMultiply*100 + hideSpacing + calcDaysBetween(firstCongressDate, '1800-01-01')*widthMultiply}px`,
 									...timelineGridHeight
 								}}
 							/>
 						))}
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1812-06-18')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1812-06-18', '1815-02-17')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1835-10-02')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1835-10-02', '1836-04-21')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1846-04-25')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1846-04-25', '1848-02-02')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1861-04-12')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1861-04-12', '1865-04-09')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1898-04-21')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1898-04-21', '1898-08-13')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1917-04-06')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1917-04-06', '1918-11-11')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1941-12-11')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1941-12-11', '1945-09-02')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1950-06-25')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1950-06-25', '1953-07-27')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1955-11-01')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1955-11-01', '1975-04-30')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '1990-08-02')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('1990-08-02', '1991-02-28')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '2001-11-07')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('2001-11-07', '2021-08-30')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
-						<div
-							className={'warLines'}
-							style={{
-								left: `${calcDaysBetween(firstCongressDate, '2003-03-20')*widthMultiply + hideSpacing}px`,
-								width: `${calcDaysBetween('2003-03-20', '2011-12-15')*widthMultiply}px`,
-								...timelineGridHeight
-							}}
-						/>
+						{miscWars.map( (war) => (
+							<TimelineRange
+								range={war}
+								cName={'miscWarLines'}
+								alignmentProps={alignmentProps}
+							/>
+						))}
+						{americanIndianWars.map( (war) => (
+							<TimelineRange
+								range={war}
+								cName={'americanIndianWarLines'}
+								alignmentProps={alignmentProps}
+							/>
+						))}
+						{typicalWars.map( (war) => (
+							<TimelineRange
+								range={war}
+								cName={'typicalWarLines'}
+								alignmentProps={alignmentProps}
+							/>
+						))}
 						<div
 							className={'civilRightsAct'}
 							style={{

@@ -3,6 +3,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --transparent: 0.2;
+  --thickLine: 1px;
+}
+
 body {
   margin: 0px 20px 20px 20px;
 }
@@ -22,7 +27,7 @@ table {
 }
 
 th {
-  border: 2px solid rgb(189, 189, 189);
+  border-right: 2px solid rgb(189, 189, 189);
   background-color: rgb(224, 224, 224);
   font-size: .8rem;
   height: 35px;
@@ -30,7 +35,8 @@ th {
 
 td {
   height: 35px;
-  border: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
   padding: 0;
   padding-left: 5px;
   line-height:0;
@@ -46,7 +52,9 @@ td {
 .timelineLineTerm,
 .timelineLineDecade,
 .timelineLineCentury,
-.warLines,
+.miscWarLines,
+.typicalWarLines,
+.americanIndianWarLines,
 .civilRightsAct {
   position: absolute;
   width: 1px;
@@ -64,10 +72,22 @@ td {
 .timelineLineCentury {
   border-left: 2px solid rgb(0, 0, 0);
 }
-.warLines {
-  border-left: 2px solid rgb(182, 0, 0);
-  border-right: 2px solid rgb(182, 0, 0);
-  background-color: rgb(182, 0, 0, 0.1);
+.miscWarLines {
+  border-left: var(--thickLine) solid rgb(182, 155, 0);
+  border-right: var(--thickLine) solid rgb(182, 155, 0);
+  background-color: rgb(182, 155, 0, var(--transparent));
+  z-index: 975;
+}
+.typicalWarLines {
+  border-left: var(--thickLine) solid rgb(182, 0, 0);
+  border-right: var(--thickLine) solid rgb(182, 0, 0);
+  background-color: rgb(182, 0, 0, var(--transparent));
+  z-index: 975;
+}
+.americanIndianWarLines {
+  border-left: var(--thickLine) solid rgb(182, 88, 0);
+  border-right: var(--thickLine) solid rgb(182, 88, 0);
+  background-color: rgb(182, 88, 0, var(--transparent));
   z-index: 975;
 }
 .civilRightsAct {
@@ -76,7 +96,8 @@ td {
 }
 
 .timelineBlock {
-  border: 1px solid rgb(0, 0, 0);
+  border-right: 1px solid rgb(0, 0, 0, 0.3);
+  border-top: 1px solid rgb(0, 0, 0, 0.3);
   position: absolute;
   height: 35px;
   z-index: 950;

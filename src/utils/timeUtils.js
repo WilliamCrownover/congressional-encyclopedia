@@ -4,7 +4,7 @@ import { Locale } from '@js-joda/locale_en-us'
 export const calcDaysBetween = (d1, d2) => {
 	const start = new LocalDate.parse(d1);
 	const end = new LocalDate.parse(d2);
-	const today = new LocalDate.now()
+	const today = new LocalDate.now();
 	const cappedEnd = end.isAfter(today) ? today : end;
 
 	return ChronoUnit.DAYS.between(start, cappedEnd);
