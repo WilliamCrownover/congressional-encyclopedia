@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LocalDate } from '@js-joda/core'
+import { TimelineGrid } from '../components/TimelineGrid';
 import { TimelineRange } from '../components/TimelineRange';
 import { dateFormat, daysInOffice, calcDaysBetween } from '../utils/timeUtils';
 import { bioImage } from '../utils/imageUtils';
@@ -7,18 +7,21 @@ import { typicalWars, americanIndianWars, miscWars } from '../data/wars';
 
 export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, terms, index, multipleSeats, wikipedia, numberOfReps, currentRep, hidden}) => {
 	const [image, setImage] = useState();
+
 	const firstTerm = terms[0];
 	const lastTerm = terms[terms.length - 1];
-	const firstCongressDate = '1789-03-04';
-	const today = new LocalDate.now().toString();
-	const hideSpacing = hidden ? 45 : 0;
-	const [windowWidth, setWindowWidth] = useState(document.documentElement.clientWidth);
-	const widthMultiply = hidden ? windowWidth/92000 : 0.013;
+
 	const cellWidthSmall = { width: '10px' };
 	const cellWidthDate = { width: '90px' };
 	const cellWidthDays = { width: '80px' };
 	const cellWidthNames = { width: '230px' };
 	const cellWidthParty = { width: '180px' };
+	
+	const [windowWidth, setWindowWidth] = useState(document.documentElement.clientWidth);
+	
+	const firstCongressDate = '1789-03-04';
+	const hideSpacing = hidden ? 45 : 0;
+	const widthMultiply = hidden ? windowWidth/92000 : 0.013;
 	const timelineGridHeight = { height: `${hidden ? 35 : 35*(numberOfReps + 1)}px` };
 	const alignmentProps = {
 		firstCongressDate,
@@ -107,42 +110,9 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 				{/* Timeline Grid */}
 				{currentRep === 0 &&
 					<>
-						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365))].map( (e, i ) => (
-							<div 
-								className={'timelineLine'}
-								style={{
-									left: `${365*i*widthMultiply + hideSpacing + calcDaysBetween(firstCongressDate, '1790-01-01')*widthMultiply}px`,
-									...timelineGridHeight
-								}}
-							/>
-						))}
-						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/2))].map( (e, i ) => (
-							<div 
-								className={'timelineLineTerm'}
-								style={{
-									left: `${365*i*widthMultiply*2 + hideSpacing + calcDaysBetween(firstCongressDate, '1791-01-01')*widthMultiply}px`,
-									...timelineGridHeight
-								}}
-							/>
-						))}
-						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/10))].map( (e, i ) => (
-							<div 
-								className={'timelineLineDecade'}
-								style={{
-									left: `${365*i*widthMultiply*10 + hideSpacing + calcDaysBetween(firstCongressDate, '1790-01-01')*widthMultiply}px`,
-									...timelineGridHeight
-								}}
-							/>
-						))}
-						{[...Array(Math.ceil(calcDaysBetween(firstCongressDate, today)/365/100))].map( (e, i ) => (
-							<div 
-								className={'timelineLineCentury'}
-								style={{
-									left: `${365*i*widthMultiply*100 + hideSpacing + calcDaysBetween(firstCongressDate, '1800-01-01')*widthMultiply}px`,
-									...timelineGridHeight
-								}}
-							/>
-						))}
+						<TimelineGrid
+							alignmentProps={alignmentProps}
+						/>
 						{miscWars.map( (war) => (
 							<TimelineRange
 								range={war}
@@ -181,7 +151,7 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 							style={{ 
 								left: `${hideSpacing}px`,
 								width: `${timelineLeftPosition(term)}px`,
-								borderTop: '1px solid lightgrey',
+								borderTop: '0px solid lightgrey',
 								borderBottom: '1px solid lightgrey',
 								top: `${hidden ? '-35px' : '0px'}`,
 								zIndex: 925
