@@ -30,6 +30,8 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 		timelineGridHeight
 	}
 
+	const showWars = false;
+
 	useEffect(() => {
 		const getData = async () => {
 			setImage(await bioImage(bioguide));
@@ -113,27 +115,31 @@ export const SenatorRow = ({allStates, bioguide, fullName, birthday, gender, ter
 						<TimelineGrid
 							alignmentProps={alignmentProps}
 						/>
-						{miscWars.map( (war) => (
-							<TimelineRange
-								range={war}
-								cName={'miscWarLines'}
-								alignmentProps={alignmentProps}
-							/>
-						))}
-						{americanIndianWars.map( (war) => (
-							<TimelineRange
-								range={war}
-								cName={'americanIndianWarLines'}
-								alignmentProps={alignmentProps}
-							/>
-						))}
-						{typicalWars.map( (war) => (
-							<TimelineRange
-								range={war}
-								cName={'typicalWarLines'}
-								alignmentProps={alignmentProps}
-							/>
-						))}
+						{showWars &&
+							<>
+								{miscWars.map( (war) => (
+									<TimelineRange
+										range={war}
+										cName={'miscWarLines'}
+										alignmentProps={alignmentProps}
+									/>
+								))}
+								{americanIndianWars.map( (war) => (
+									<TimelineRange
+										range={war}
+										cName={'americanIndianWarLines'}
+										alignmentProps={alignmentProps}
+									/>
+								))}
+								{typicalWars.map( (war) => (
+									<TimelineRange
+										range={war}
+										cName={'typicalWarLines'}
+										alignmentProps={alignmentProps}
+									/>
+								))}
+							</>
+						}
 						<div
 							className={'civilRightsAct'}
 							style={{
